@@ -44,24 +44,27 @@ class Produto:
 
   def removerProduto(self):
     while True:
+      try:
 
-      id = input("Digite o código do produto que deseja removerou digite 'Sair' para voltar ao menu: ")
+        id = input("Digite o código do produto que deseja removerou digite 'Sair' para voltar ao menu: ")
 
-      if(id.upper() == self.SAIR):
+        if(id.upper() == self.SAIR):
+          break
+
+        produto_encontrado = self.consultarProdutoPorId(id)
+
+        if produto_encontrado is None:
+          print("ID não encontrado ou ja removido. Veja a lista novamente.")
+          self.consultarProduto(self.TODOS)
+          return
+        
+        produtos.remove(produto_encontrado)
+
+        print(f"Produto {produto_encontrado['descricao']} removido com sucesso!")
         break
-
-      produto_encontrado = self.consultarProdutoPorId(id)
-
-      if produto_encontrado is None:
-        print("ID não encontrado. Veja a lista de produtos:")
-        self.consultarProduto(self.TODOS)
+      except TypeError:
+        print("O id não esta na lista ou ja foi removido.")
         return
-      
-      produtos.remove(produto_encontrado)
-
-      print(f"Produto {produto_encontrado['descricao']} removido com sucesso!")
-      break
-
   def consultarProduto(self):
 
     id = input("Digite o id do produto que deseja buscar! (Digite 'todos' para retornar todos os produtos cadastrados) ")

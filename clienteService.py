@@ -43,24 +43,27 @@ class Cliente:
 
   def removerCliente(self):
     while True:
+      try:
 
-      id = input("Digite o código do cliente que deseja removerou digite 'Sair' para voltar ao menu: ")
+        id = input("Digite o código do cliente que deseja removerou digite 'Sair' para voltar ao menu: ")
 
-      if(id.upper() == self.SAIR):
+        if(id.upper() == self.SAIR):
+          break
+
+        cliente_encontrado = self.consultarClientePorId(id)
+
+        if cliente_encontrado is None:
+          print("ID não encontrado ou ja removido. Veja a lista de clientes novamente.")
+          self.consultarCliente(self.TODOS)
+          return
+        
+        clientes.remove(cliente_encontrado)
+
+        print(f"Cliente {cliente_encontrado['nome']} removido com sucesso!")
         break
-
-      cliente_encontrado = self.consultarClientePorId(id)
-
-      if cliente_encontrado is None:
-        print("ID não encontrado. Veja a lista de clientes:")
-        self.consultarCliente(self.TODOS)
+      except TypeError:
+        print("O id não esta na lista ou ja foi removido.")
         return
-      
-      clientes.remove(cliente_encontrado)
-
-      print(f"Cliente {cliente_encontrado['nome']} removido com sucesso!")
-      break
-
   def consultarCliente(self):
 
     id = input("Digite o id do cliente que deseja buscar! (Digite 'todos' para retornar todos os clientes cadastrados) ")
