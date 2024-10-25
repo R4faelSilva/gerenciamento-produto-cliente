@@ -10,8 +10,7 @@ class ClienteApiService:
         
         if response.status_code == 200:
             users = response.json()
-            print(users)
-            return
+            return users
         else:
             print("Erro ao acessar a API:", response.status_code)
 
@@ -24,9 +23,8 @@ class ClienteApiService:
         elif id is not None:
             response = requests.get(f"{url}/{id}")
         else:
-            self.buscarClientes()
-            return
-    
+            return self.buscarClientes()
+
     # Post sendo enviado o body JSON
     def adcionarCliente(self, nome):
         novo_cliente = {"nome": nome}
@@ -59,11 +57,11 @@ class ClienteApiService:
             print("Erro ao remover o cliente:", response.status_code)
 
 
-servico = ClienteApiService()
+# servico = ClienteApiService()
 # clientes = servico.buscarCliente()
 # servico.buscarCliente("1")
 # servico.buscarCliente(None, "Joestar")
 # servico.buscarCliente("f62e", "Joberson")
 # servico.adcionarCliente("Joberson")
 # servico.alterarCliente("1", "Joelson")
-servico.removerCliente("3")
+# servico.removerCliente("3")

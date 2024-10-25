@@ -1,19 +1,21 @@
-clientes = [
-  {"id": 1, "nome": "Leonardo"},
-  {"id": 2, "nome": "Brenda"},
-  {"id": 3, "nome": "Catarina"}
-]
+from api.clientesApiService import ClienteApiService
+
+# clientes = [
+#   {"id": 1, "nome": "Leonardo"},
+#   {"id": 2, "nome": "Brenda"},
+#   {"id": 3, "nome": "Catarina"}
+# ]
 
 class Cliente:
   TODOS = "TODOS"
   SAIR = "SAIR"
 
+  def __init__(self):
+    self.clienteApi = ClienteApiService
+
   def adicionarCliente(self):
     nome = input("Qual o nome do cliente que deseja adicionar? ")
-    proximoId = len(clientes)+1
-    while next((cliente for cliente in clientes if cliente["id"] == proximoId), None) is not None:
-      proximoId += 1
-    clientes.append({"id": proximoId, "nome": nome})
+    self.clientesApi.adcionarCliente(nome)
 
     print(f"{nome} foi adicionado a lista de Clientes")
 
@@ -25,7 +27,7 @@ class Cliente:
       if(id.upper() == self.SAIR):
         break
 
-      cliente_encontrado = cliente_encontrado = self.consultarClientePorId(id)
+      cliente_encontrado = self.clienteApi.buscarCliente
 
       if cliente_encontrado is None:
           print("ID não encontrado. Veja a lista de clientes:")
@@ -36,9 +38,7 @@ class Cliente:
 
       novo_nome = input("Digite o novo nome do cliente: ")
 
-      cliente_encontrado['nome'] = novo_nome
-
-      print(f"Cliente atualizado: {cliente_encontrado['id']} - {cliente_encontrado['nome']}")
+      self.clienteApi.alterarCliente(id, novo_nome)
       break
 
   def removerCliente(self):
@@ -54,12 +54,11 @@ class Cliente:
 
         if cliente_encontrado is None:
           print("ID não encontrado ou ja removido. Veja a lista de clientes novamente.")
-          self.consultarCliente(self.TODOS)
+          clientes = self.clienteApi.buscarCliente
+          print(clientes)
           return
         
-        clientes.remove(cliente_encontrado)
-
-        print(f"Cliente {cliente_encontrado['nome']} removido com sucesso!")
+        self.clientes.remove(cliente_encontrado)
         break
       except TypeError:
         print("O id não esta na lista ou ja foi removido.")
@@ -72,21 +71,27 @@ class Cliente:
       for cliente in clientes:  
         print(f"{cliente['id']} - {cliente['nome']}")
     else:  
-      cliente = self.consultarClientePorId(id)
+      cliente = self.clienteApi.buscarCliente(id)
       print(f"Dados do cliente: {cliente['id']} - {cliente['nome']}")
     
   def consultarClientePorId(self, id):
-    try:
-        id = int(id)
-    except ValueError:
-      print("Não foi digitado um número inteiro!")
-      return
+    # try:
+    #     id = int(id)
+    # except ValueError:
+    #   print("Não foi digitado um número inteiro!")
+    #   return
 
-    cliente_encontrado = None
+    # cliente_encontrado = None
 
-    for cliente in clientes:
-        if cliente["id"] == id:
-            cliente_encontrado = cliente
-            break
+    # for cliente in clientes:
+    #     if cliente["id"] == id:
+    #         cliente_encontrado = cliente
+    #         break
+
+    cliente = self.clienteApi.buscarCliente(id)
       
-    return cliente_encontrado
+    if cliente is None:
+      print("Usuário não encontrado.")
+    
+    print(f"Dados do cliente: {cliente['id']} - {cliente['nome']}")
+  
